@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class UserController {
     @Autowired
     private UserValidatorService userValidatorService;
 
-    @PostMapping("/register")
+    @PostMapping("/registerUser")
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) {
         boolean isUserNew = userValidatorService.validateIfUserIsNew(userDTO);
         if(isUserNew) {
@@ -43,7 +42,7 @@ public class UserController {
        return ResponseEntity.status(200).body(userDTO);
     }
 
-    @DeleteMapping("/operations/delete")
+    @DeleteMapping("/operations/deleteUser")
     public ResponseEntity<String> deleteUser() {
         Users loggedInUser = userService.getLoggedInUserDetails();
         String loggedInUserName = loggedInUser.getUsername();
