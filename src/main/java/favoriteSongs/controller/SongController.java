@@ -29,19 +29,18 @@ public class SongController {
     }
 
     @GetMapping("/viewAllSongs")
-    public ResponseEntity<List<Song>> viewAllSongs() {
+    public ResponseEntity<List<SongDTO>> viewAllSongs() {
         return ResponseEntity.status(200).body(songService.viewAllSongs());
     }
 
     @GetMapping("/viewSong/{title}")
-    public ResponseEntity<Song> viewSong(@PathVariable String title) {
+    public ResponseEntity<SongDTO> viewSong(@PathVariable String title) {
         Song responseBodyAsSong = null;
-        Optional<Song> songRecord = songService.viewSong(title);
-        if(songRecord.isPresent()) {
-            responseBodyAsSong = songRecord.get();
-            return ResponseEntity.status(200).body(responseBodyAsSong);
+        SongDTO songRecord = songService.viewSong(title);
+        if(songRecord!=null) {
+            return ResponseEntity.status(200).body(songRecord);
         } else {
-            return ResponseEntity.status(404).body(responseBodyAsSong);
+            return ResponseEntity.status(404).body(songRecord);
         }
     }
 

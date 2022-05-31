@@ -27,7 +27,7 @@ public class UserDTO {
 
     private String password;
 
-    private List<Song> songs = new ArrayList<>();
+    private List<SongDTO> songs = new ArrayList<>();
 
     public UserDTO(String firstName, String lastName, String username, String password) {
         this.firstName = firstName;

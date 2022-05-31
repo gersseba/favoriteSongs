@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SongService {
@@ -33,20 +34,34 @@ public class SongService {
         return song;
     }
 
-    public List<Song> viewAllSongs() {
+    public List<SongDTO> viewAllSongs() {
         Users user = fetchLoggedInUserDetails();
         logger.info("returning  "+user.getSongs().size()+" song stored under username "+user.getUsername()+" in database");
-        return user.getSongs();
+        List<Song> songs = user.getSongs();
+        if(songs.size()>0) {
+            return songs.stream().map(k -> mapSongDTOFromSong(k)).collect(Collectors.toList());
+        } else {
+            return null;
+        }
     }
 
-    public Optional<Song> viewSong(String title) {
+    public SongDTO viewSong(String title) {
         Users user = fetchLoggedInUserDetails();
         logger.info("attempting to find song in database "+title+" for logged in username "+user.getUsername());
-        return user.getSongs().stream().filter(k->k.getTitle().equalsIgnoreCase(title)).findAny();
+        Optional<Song> song = user.getSongs().stream().filter(k->k.getTitle().equalsIgnoreCase(title)).findAny();
+        if(song.isPresent()) {
+            return mapSongDTOFromSong(song.get());
+        } else {
+            return null;
+        }
     }
 
     public Song mapSongFromSongDTO(SongDTO songDTO) {
         return modelMapper.map(songDTO, Song.class);
+    }
+
+    public SongDTO mapSongDTOFromSong(Song song) {
+        return modelMapper.map(song, SongDTO.class);
     }
 
     private Users fetchLoggedInUserDetails() {

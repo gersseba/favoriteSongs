@@ -40,30 +40,30 @@ public class SongControllerTest {
 
     @Test
     public void testViewAllSongsReturnsOKStatusWithAllSongs() {
-        Song song1 = new Song("testTitle1","testGenre1", new Date(),"testArtist1");
-        Song song2 = new Song("testTitle2","testGenre2", new Date(),"testArtist2");
-        List<Song> songList = new ArrayList<>();
+        SongDTO song1 = new SongDTO("testTitle1","testGenre1", new Date(),"testArtist1");
+        SongDTO song2 = new SongDTO("testTitle2","testGenre2", new Date(),"testArtist2");
+        List<SongDTO> songList = new ArrayList<>();
         songList.add(song1);
         songList.add(song2);
         when(songService.viewAllSongs()).thenReturn(songList);
-        ResponseEntity<List<Song>> responseEntity = songController.viewAllSongs();
+        ResponseEntity<List<SongDTO>> responseEntity = songController.viewAllSongs();
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
         Assert.assertEquals(2, responseEntity.getBody().size());
     }
 
     @Test
     public void testViewSongShouldReturnNotFoundStatusCodeAndNullResponse() {
-        when(songService.viewSong("randomTitle")).thenReturn(Optional.empty());
-        ResponseEntity<Song> responseEntity = songController.viewSong("randomTitle");
+        when(songService.viewSong("randomTitle")).thenReturn(null);
+        ResponseEntity<SongDTO> responseEntity = songController.viewSong("randomTitle");
         Assert.assertEquals(404, responseEntity.getStatusCodeValue());
         Assert.assertNull(responseEntity.getBody());
     }
 
     @Test
     public void testViewSongShouldReturnOKStatusCodeAndSongResponse() {
-        Song song = new Song("testTitle","testGenre", new Date(),"testArtist");
-        when(songService.viewSong("testTitle")).thenReturn(Optional.of(song));
-        ResponseEntity<Song> responseEntity = songController.viewSong("testTitle");
+        SongDTO songDTO = new SongDTO("testTitle","testGenre", new Date(),"testArtist");
+        when(songService.viewSong("testTitle")).thenReturn(songDTO);
+        ResponseEntity<SongDTO> responseEntity = songController.viewSong("testTitle");
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
         Assert.assertNotNull(responseEntity.getBody());
         Assert.assertEquals("testTitle", responseEntity.getBody().getTitle());
