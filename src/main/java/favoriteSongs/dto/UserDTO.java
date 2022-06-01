@@ -1,7 +1,6 @@
 package favoriteSongs.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import favoriteSongs.entity.Song;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
